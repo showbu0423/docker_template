@@ -4,7 +4,7 @@
 
 ## 環境構築ファイル（dockerファイル）をクローン
 ```
-git clone
+git clone git@github.com:showbu0423/docker_template.git .
 ```
 
 ## docker環境をビルド
