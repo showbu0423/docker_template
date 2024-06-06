@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./infra/php/dockerfile
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www/html
+      - ./infra/apache/000-default.conf:/etc/apache2/sites-enabled/000-default.conf
+
+  db:
+    image: mysql:8.0
+    platform: linux/x86_64
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: reservation_management
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: password
+      TZ: 'Asia/Tokyo'
+    volumes:
+      - db-store:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin
+    ports:
+      - "8081:80"
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOSTS=db
+      - PMA_USER=root
+      - PMA_PASSWORD=password
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - '8025:8025'
+
+volumes:
+  db-store:

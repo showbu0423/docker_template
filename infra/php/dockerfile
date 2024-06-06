@@ -1,0 +1,24 @@
+FROM php:8.2-apache
+
+ENV TZ Asia/Tokyo
+
+RUN apt-get update && \
+    apt-get install -y git unzip libzip-dev libicu-dev libonig-dev vim gnupg locales && \
+    echo "ja_JP UTF-8" > /etc/locale.gen && \
+    locale-gen && \
+    echo "export LANG=ja_JP.UTF-8" >> ~/.bashrc && \
+    docker-php-ext-install intl pdo_mysql zip bcmath
+
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
+RUN apt-get install -y nodejs
+
+RUN  a2enmod rewrite
+
+RUN echo "\n\
+alias ll='ls -la --color'\n\
+" >> /root/.bashrc
+
+COPY ./infra/php/php.ini /usr/local/etc/php/php.ini
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+
+WORKDIR /var/www/html
