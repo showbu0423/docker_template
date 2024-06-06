@@ -38,6 +38,12 @@ composer require laravel/breeze --dev
 php artisan breeze:install blade
 ```
 
+## php artisan migrate実行時のエラー
+### SQLSTATE[HY000] [1044] Access denied for user 'admin'@'%' to database　　のエラーが発生した場合
+phpmyadmonの `サーバ： db/ユーザアカウント`から`admin`を選択して`グローバル権限  すべてチェックする`をチェックして実行する
+その後`php artisan migrate`を再度実行するとうまくいく
+
+
 ## アクセス
 アプリ画面
 ```
